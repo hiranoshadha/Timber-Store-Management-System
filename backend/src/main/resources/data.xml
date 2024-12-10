@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- Create Tables -->
+    <changeSet id="1" author="dev">
+        <createTable tableName="products">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_code" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="product_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_stock" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="stock_transactions">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_stock_product" references="products(id)"/>
+            </column>
+            <column name="quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_type" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="purchases">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="purchase_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="double">
+                <constraints nullable="false"/>
+            </column>
+            
+            
+        </createTable>
+
+        <createTable tableName="sales">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sale_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="double">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Sample Data -->
+    <changeSet id="2" author="dev">
+        <insert tableName="products">
+            <column name="product_code" value="PINE001"/>
+            <column name="product_name" value="Pine Wood Plank"/>
+            <column name="price" value="25.99"/>
+            <column name="current_stock" value="100"/>
+        </insert>
+        <insert tableName="products">
+            <column name="product_code" value="OAK002"/>
+            <column name="product_name" value="Oak Wood Board"/>
+            <column name="price" value="45.50"/>
+            <column name="current_stock" value="75"/>
+        </insert>
+
+        <insert tableName="stock_transactions">
+            <column name="product_id" value="1"/>
+            <column name="quantity" value="100"/>
+            <column name="transaction_time" value="2024-01-01 10:00:00"/>
+            <column name="transaction_type" value="ADD"/>
+        </insert>
+
+        <insert tableName="purchases">
+            <column name="purchase_time" value="2024-01-02 14:30:00"/>
+            <column name="description" value="Bulk purchase of Pine Wood"/>
+            <column name="amount" value="259.90"/>
+            
+        </insert>
+
+        <insert tableName="sales">
+            <column name="sale_time" value="2024-01-03 15:45:00"/>
+            <column name="description" value="Retail sale"/>
+            <column name="amount" value="91.00"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
